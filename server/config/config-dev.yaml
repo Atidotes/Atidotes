@@ -1,0 +1,15 @@
+# 开发环境
+mode:     dev
+KIND:     Server
+VERSION:  v1
+
+server:
+  host:     localhost
+  port:     8080
+  address:  localhost:8080
+mysql:
+  root:     root
+  password: "@0304lgt."
+  host:     localhost
+  port:     3306
+  db:      "Atidotes"
