@@ -13,6 +13,7 @@ declare module 'vue' {
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElMain: typeof import('element-plus/es')['ElMain']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     Footer: typeof import('./src/components/footer/footer.vue')['default']
     Header: typeof import('./src/components/header/header.vue')['default']
     Login: typeof import('./src/components/login/login.vue')['default']
