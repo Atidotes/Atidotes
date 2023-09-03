@@ -27,11 +27,6 @@
         <a href="https://github.com/Atidotes/chat" class="gitHub">
           <span class="iconfont lee_github lee_icon"></span>
         </a>
-        <span
-          @click="handleFavorite"
-          :class="favorite"
-          class="iconfont lee_icon"
-        ></span>
       </div>
     </div>
   </el-header>
@@ -42,14 +37,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import login from "@/components/login/login.vue";
+import login from "@/components/system/login/login.vue";
 import { Moon, Sunny } from "@element-plus/icons-vue";
 import { setTheme } from "@/style/index";
 
 /** 定义登录 */
 let theme = localStorage.getItem("theme");
 const isDark = ref(theme === "dark");
-const favorite = ref("lee_notFavorite");
 const loginRef = ref<InstanceType<typeof login>>();
 
 /** 初始化数据 */
@@ -63,12 +57,6 @@ const handleDialog = () => {
   loginRef.value.isDialog = true;
 };
 
-/** 收藏网站 */
-const handleFavorite = () => {
-  favorite.value =
-    favorite.value === "lee_notFavorite" ? "lee_favorite" : "lee_notFavorite";
-};
-
 /** 改变switch */
 const handleChangeSwitch = (isDark: boolean) => {
   isDark ? setTheme(false, "dark") : setTheme(false, "default");
@@ -78,7 +66,7 @@ const handleChangeSwitch = (isDark: boolean) => {
 <style lang="less" scoped>
 .lee_header {
   width: 100%;
-  height: 6vh;
+  height: 6.5vh;
   background-color: @backgroundColor;
   display: flex;
   justify-content: center;
@@ -122,7 +110,7 @@ const handleChangeSwitch = (isDark: boolean) => {
     }
 
     .right {
-      width: 10vw;
+      width: 8vw;
       height: 100%;
       display: flex;
       align-items: center;
@@ -134,10 +122,6 @@ const handleChangeSwitch = (isDark: boolean) => {
 
       .gitHub {
         text-decoration: none;
-      }
-
-      .lee_favorite {
-        color: #4285f4;
       }
     }
   }

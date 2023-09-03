@@ -9,8 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import leeHeader from "@/components/header/header.vue"
-import leeFooter from "@/components/footer/footer.vue"
+import leeHeader from "@/components/system/header/header.vue"
+import leeFooter from "@/components/system/footer/footer.vue"
 </script>
 
 <style lang="less" scoped>
