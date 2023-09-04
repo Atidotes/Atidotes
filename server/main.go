@@ -9,7 +9,6 @@ import (
 	Models "server/models"
 	routers "server/routes"
 	"server/setting"
-	"server/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,7 +47,7 @@ func main() {
 	f, _ := os.Create("gin.log")
 	gin.DefaultWriter = io.MultiWriter(f)
 
-	utils.SendEmailCode("2392503436@qq.com", "123456")
+	// utils.SendEmailCode("2392503436@qq.com", "123456")
 
 	// 路由
 	r := routers.SetupRouter()

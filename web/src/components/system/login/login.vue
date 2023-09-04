@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    title="登录"
-    v-model="isDialog"
-    width="50vw"
-    custom-class="lee_login"
-  >
+  <el-dialog title="登录" v-model="isDialog" width="50vw">
     <div class="login">
       <!-- 关注公众号 -->
       <div class="follow_official_account">
@@ -16,24 +11,26 @@
 
       <!-- 表单登录 -->
       <div class="form_login">
-        <!-- 选项卡 -->
-        <el-radio-group v-model="loginType">
-          <el-radio-button label="0">手机验证码登录</el-radio-button>
-          <el-radio-button label="1">邮箱验证码登录</el-radio-button>
-          <el-radio-button label="2">账号密码登录</el-radio-button>
-        </el-radio-group>
-
-        <!-- 登录表单 -->
         <el-form
           ref="loginRef"
           :model="loginForm"
           status-icon
           :rules="loginRules"
-          class="login_form"
           label-width="3.75vw"
         >
+          <!-- 选项卡 -->
+          <el-row class="login_tab">
+            <el-col :span="24">
+              <el-radio-group v-model="loginForm.loginType">
+                <el-radio-button label="0">手机验证码登录</el-radio-button>
+                <el-radio-button label="1">邮箱验证码登录</el-radio-button>
+                <el-radio-button label="2">账号密码登录</el-radio-button>
+              </el-radio-group>
+            </el-col>
+          </el-row>
+
           <!-- 手机验证码登录 -->
-          <el-row v-if="loginType === '0'">
+          <el-row v-if="loginForm.loginType === '0'">
             <!-- 手机号 -->
             <el-col :span="24">
               <el-form-item label="手机号">
@@ -70,13 +67,13 @@
             <!-- 登录 -->
             <el-col :span="24">
               <div class="login_button">
-                <el-button type="primary">登录</el-button>
+                <el-button @click="handleLogin" type="primary">登录</el-button>
               </div>
             </el-col>
           </el-row>
 
           <!-- 邮箱验证码登录 -->
-          <el-row v-if="loginType === '1'">
+          <el-row v-if="loginForm.loginType === '1'">
             <!-- 邮箱号 -->
             <el-col :span="24">
               <el-form-item label="邮箱号">
@@ -113,13 +110,13 @@
             <!-- 登录 -->
             <el-col :span="24">
               <div class="login_button">
-                <el-button type="primary">登录</el-button>
+                <el-button @click="handleLogin" type="primary">登录</el-button>
               </div>
             </el-col>
           </el-row>
 
           <!-- 账号密码登录 -->
-          <el-row v-if="loginType === '2'">
+          <el-row v-if="loginForm.loginType === '2'">
             <el-col :span="24">
               <el-form-item label="账号">
                 <el-input placeholder="请填写账号"></el-input>
@@ -142,7 +139,7 @@
             </el-col>
             <el-col :span="24">
               <div class="login_button">
-                <el-button type="primary">登录</el-button>
+                <el-button @click="handleLogin" type="primary">登录</el-button>
               </div>
             </el-col>
           </el-row>
@@ -158,10 +155,16 @@ import type { FormInstance, FormRules } from "element-plus";
 
 const isDialog = ref(false); // 控制对话框显示隐藏
 const loginRef = ref<FormInstance>(); // 表单元素
-const loginType = ref("0"); // 登录方式
-const loginForm = reactive({});
+// const loginType = ref("0"); // 登录方式
+const loginForm = reactive({
+  loginType: 0,
+});
 
 const loginRules = ref<FormRules>({});
+
+const handleLogin = () => {
+  console.log("登录", loginForm);
+};
 
 /** 暴露属性 */
 defineExpose({
@@ -196,14 +199,14 @@ defineExpose({
   .form_login {
     margin-left: 1.85vw;
     width: 55%;
-    .login_form {
-      margin-top: 5vh;
-      .login_button {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+    .login_tab {
+      margin-bottom: 3.5vh;
+    }
+    .login_button {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
