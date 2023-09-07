@@ -48,6 +48,7 @@ func main() {
 	gin.DefaultWriter = io.MultiWriter(f)
 
 	// utils.SendEmailCode("2392503436@qq.com", "123456")
+	// utils.GenerateAccount()
 
 	// 路由
 	r := routers.SetupRouter()

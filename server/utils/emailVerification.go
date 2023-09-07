@@ -25,7 +25,7 @@ func SendEmailCode(toUserEmail, code string) error {
 	build.WriteString(code)
 	build.WriteString(" ，感谢使用！</p>")
 	fmt.Print(build.String())
-	mailBody := build.String() // "感谢使用！</p>" //邮件内容,可以是html
+	mailBody := build.String() // 邮件内容
 
 	//接收者邮箱列表
 	mailTo := []string{
