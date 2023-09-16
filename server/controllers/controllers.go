@@ -1,24 +1,21 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
-	dataEncryption "server/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
+// 登录接口
 func Login(ctx *gin.Context) {
-	user := ctx.PostForm("user")
-	password := ctx.PostForm("password")
-	bytes, _ := dataEncryption.Encryption(password)
-	a := dataEncryption.Decrypt(string(bytes), user)
+	// a, _ := ctx.GetRawData()
 
-	fmt.Printf("bytes: %v\n", string(bytes))
-	fmt.Printf("a: %v\n", a)
+	// var m map[string]interface{}
+	// // 反序列化
+	// _ = json.Unmarshal(a, &m)
 
-	fmt.Printf("user: %v\n", user)
-	fmt.Printf("password: %v\n", string(password))
+	// fmt.Printf("userData: %v\n", string(a))
+	// fmt.Printf("m: %v\n", m["user"])
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "success",

@@ -1,3 +1,7 @@
+/**
+ *** 数据加密处理
+ */
+
 package utils
 
 import (

@@ -1,3 +1,6 @@
+/**
+ ***  根据日期随机生成账号
+ */
 package utils
 
 import (
@@ -30,6 +33,7 @@ func GenerateAccount() (accountNumber string) {
 	day := dateString[8:10]
 	randomString := randomString()
 
+	// 拼接字符串
 	var build strings.Builder
 	build.WriteString(year)
 	build.WriteString(month)

@@ -1,3 +1,7 @@
+/**
+ ***  邮箱验证码
+ */
+
 package utils
 
 import (
