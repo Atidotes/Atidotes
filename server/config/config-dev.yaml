@@ -1,7 +1,7 @@
 # 开发环境
-mode:     dev
-KIND:     Server
-VERSION:  v1
+mode:     dev     # 环境
+KIND:     Server  # 名字
+VERSION:  v1      # 版本
 
 server:
   host:     localhost

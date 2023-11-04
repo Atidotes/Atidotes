@@ -14,7 +14,8 @@ func SetupRouter() *gin.Engine {
 	// v1
 	v1Group := r.Group("v1")
 	{
-		v1Group.POST("/login", controllers.Login)
+		v1Group.GET("/system/emailCaptcha", controllers.EmailCaptcha)
+		v1Group.POST("/system/login", controllers.Login)
 	}
 	return r
 }

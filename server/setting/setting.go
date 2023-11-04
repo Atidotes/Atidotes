@@ -11,6 +11,6 @@ type MySQLConfig struct {
 
 // 邮箱配置
 type Mailbox struct {
-	Sender   string `yaml:sender`
-	AuthCode string `yaml:authCode`
+	Sender   string `yaml:"sender"`
+	AuthCode string `yaml:"authCode"`
 }
