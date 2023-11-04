@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AccountLogin: typeof import('./src/components/system/login/components/accountLogin/accountLogin.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -22,9 +23,11 @@ declare module 'vue' {
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    EmailLogin: typeof import('./src/components/system/login/components/emailLogin/emailLogin.vue')['default']
     Footer: typeof import('./src/components/system/footer/footer.vue')['default']
     Header: typeof import('./src/components/system/header/header.vue')['default']
     Login: typeof import('./src/components/system/login/login.vue')['default']
+    MobileLogin: typeof import('./src/components/system/login/components/mobileLogin/mobileLogin.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

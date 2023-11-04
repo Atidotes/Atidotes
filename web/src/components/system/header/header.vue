@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import login from "@/components/system/login/login.vue";
+import { login } from "@/components/system";
 import { Moon, Sunny } from "@element-plus/icons-vue";
 import { setTheme } from "@/style/index";
 

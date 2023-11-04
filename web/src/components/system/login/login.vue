@@ -11,159 +11,130 @@
 
       <!-- 表单登录 -->
       <div class="form_login">
-        <el-form
-          ref="loginRef"
-          :model="loginForm"
-          status-icon
-          :rules="loginRules"
-          label-width="3.75vw"
-        >
-          <!-- 选项卡 -->
-          <el-row class="login_tab">
-            <el-col :span="24">
-              <el-radio-group v-model="loginForm.loginType">
-                <el-radio-button label="0">手机验证码登录</el-radio-button>
-                <el-radio-button label="1">邮箱验证码登录</el-radio-button>
-                <el-radio-button label="2">账号密码登录</el-radio-button>
-              </el-radio-group>
-            </el-col>
-          </el-row>
+        <!-- 选项卡 -->
+        <el-row class="login_tab">
+          <el-col :span="24">
+            <el-radio-group v-model="params.loginType">
+              <el-radio-button :label="0">手机验证码登录</el-radio-button>
+              <el-radio-button :label="1">邮箱验证码登录</el-radio-button>
+              <el-radio-button :label="2">账号密码登录</el-radio-button>
+            </el-radio-group>
+          </el-col>
+        </el-row>
 
-          <!-- 手机验证码登录 -->
-          <el-row v-if="loginForm.loginType === '0'">
-            <!-- 手机号 -->
-            <el-col :span="24">
-              <el-form-item label="手机号">
-                <el-input placeholder="请填写手机号"></el-input>
-              </el-form-item>
-            </el-col>
+        <!-- 手机验证码登录 -->
+        <el-row v-if="params.loginType === 0">
+          <mobileLogin ref="mobileLoginRef" />
+        </el-row>
 
-            <!-- 发送验证码 -->
-            <el-col :span="24">
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="验证码">
-                    <el-input placeholder="请填写验证码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-button type="primary">获取验证码</el-button>
-                </el-col>
-              </el-row>
-            </el-col>
+        <!-- 邮箱验证码登录 -->
+        <el-row v-if="params.loginType === 1">
+          <emailLogin ref="emailLoginRef" />
+        </el-row>
 
-            <!-- 图形验证码验证 -->
-            <el-col :span="24">
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="验证码">
-                    <el-input placeholder="请填写验证码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12"></el-col>
-              </el-row>
-            </el-col>
+        <!-- 账号密码登录 -->
+        <el-row v-if="params.loginType === 2">
+          <accountLogin ref="accountLoginRef" />
+        </el-row>
 
-            <!-- 登录 -->
-            <el-col :span="24">
-              <div class="login_button">
-                <el-button @click="handleLogin" type="primary">登录</el-button>
-              </div>
-            </el-col>
-          </el-row>
-
-          <!-- 邮箱验证码登录 -->
-          <el-row v-if="loginForm.loginType === '1'">
-            <!-- 邮箱号 -->
-            <el-col :span="24">
-              <el-form-item label="邮箱号">
-                <el-input placeholder="请填写邮箱号"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <!-- 发送验证码 -->
-            <el-col :span="24">
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="验证码">
-                    <el-input placeholder="请填写验证码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-button type="primary">获取验证码</el-button>
-                </el-col>
-              </el-row>
-            </el-col>
-
-            <!-- 图形验证码验证 -->
-            <el-col :span="24">
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="验证码">
-                    <el-input placeholder="请填写验证码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12"></el-col>
-              </el-row>
-            </el-col>
-
-            <!-- 登录 -->
-            <el-col :span="24">
-              <div class="login_button">
-                <el-button @click="handleLogin" type="primary">登录</el-button>
-              </div>
-            </el-col>
-          </el-row>
-
-          <!-- 账号密码登录 -->
-          <el-row v-if="loginForm.loginType === '2'">
-            <el-col :span="24">
-              <el-form-item label="账号">
-                <el-input placeholder="请填写账号"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-form-item label="密码">
-                <el-input placeholder="请填写密码"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="24">
-              <el-row :gutter="24">
-                <el-col :span="12">
-                  <el-form-item label="验证码">
-                    <el-input placeholder="请填写验证码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12"></el-col>
-              </el-row>
-            </el-col>
-            <el-col :span="24">
-              <div class="login_button">
-                <el-button @click="handleLogin" type="primary">登录</el-button>
-              </div>
-            </el-col>
-          </el-row>
-        </el-form>
+        <el-row>
+          <el-col :span="24">
+            <div class="login_button">
+              <el-button @click="handleLogin" type="primary">登录</el-button>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import type { FormInstance, FormRules } from "element-plus";
+import { ref } from "vue";
+import mobileLogin from "./components/mobileLogin/mobileLogin.vue";
+import emailLogin from "./components/emailLogin/emailLogin.vue";
+import accountLogin from "./components/accountLogin/accountLogin.vue";
+import { useCurrentInstance } from "@/hooks/system/useSystem";
+
+/** 获取组件实例 */
+const { proxy } = useCurrentInstance();
 
 const isDialog = ref(false); // 控制对话框显示隐藏
-const loginRef = ref<FormInstance>(); // 表单元素
-// const loginType = ref("0"); // 登录方式
-const loginForm = reactive({
-  loginType: 0,
+const mobileLoginRef = ref<InstanceType<typeof mobileLogin>>(); // 手机表单DOM
+const emailLoginRef = ref<InstanceType<typeof emailLogin>>(); // 邮箱表单DOM
+const accountLoginRef = ref<InstanceType<typeof accountLogin>>(); // 账号表单DOM
+const params = ref({
+  loginType: 0, // 登录类型 0 手机验证码登录 1 邮箱验证码登录 2 账号密码登录
+  mobile: null, // 手机号
+  mailbox: null, // 邮箱号
+  account: null, // 账号
+  password: null, // 密码
+  captcha: null, // 手机验证码
+  chartCaptcha: null, // 图形验证码
 });
 
-const loginRules = ref<FormRules>({});
-
+/** 点击提交表单并登录 */
 const handleLogin = () => {
-  console.log("登录", loginForm);
+  if (params.value.loginType === 0) {
+    mobileSubmit();
+  } else if (params.value.loginType === 1) {
+    emailSubmit();
+  } else if (params.value.loginType === 2) {
+    accountSubmit();
+  }
+};
+
+/** 提交手机表单 */
+const mobileSubmit = () => {
+  if (!mobileLoginRef.value) return;
+  mobileLoginRef.value.validateMobile((valid) => {
+    if (valid) {
+      Object.assign(params.value, mobileLoginRef.value?.formState);
+      console.log("手机表单获取参数", params.value);
+
+      proxy.$message.success("登录成功");
+
+      mobileLoginRef.value?.resetFieldsMobile();
+      Object.assign(params.value, mobileLoginRef.value?.formState);
+    } else {
+      proxy.$message.error("表单验证失败");
+    }
+  });
+};
+
+/** 提交邮箱表单 */
+const emailSubmit = () => {
+  if (!emailLoginRef.value) return;
+  emailLoginRef.value.validateMailbox((valid) => {
+    if (valid) {
+      Object.assign(params.value, emailLoginRef.value?.formState);
+      console.log("邮箱获取参数", params.value);
+
+      proxy.$message.success("登录成功");
+
+      emailLoginRef.value?.resetFieldsMailbox();
+      Object.assign(params.value, emailLoginRef.value?.formState);
+    } else {
+      proxy.$message.error("表单验证失败");
+    }
+  });
+};
+
+/** 提交账号表单 */
+const accountSubmit = () => {
+  if (!accountLoginRef.value) return;
+  accountLoginRef.value.validateAccount((valid) => {
+    if (valid) {
+      Object.assign(params.value, accountLoginRef.value?.formState);
+      console.log("账号获取参数", params.value);
+
+      proxy.$message.success("登录成功");
+      accountLoginRef.value?.resetFieldsAccount();
+      Object.assign(params.value, accountLoginRef.value?.formState);
+    } else {
+      proxy.$message.error("表单验证失败");
+    }
+  });
 };
 
 /** 暴露属性 */
