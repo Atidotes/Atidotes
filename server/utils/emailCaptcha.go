@@ -28,7 +28,6 @@ func SendEmailCode(toUserEmail, code string) error {
 	build.WriteString("<P>欢迎您注册此网站，您的验证码为")
 	build.WriteString(code)
 	build.WriteString(" ，感谢使用！</p>")
-	fmt.Print(build.String())
 	mailBody := build.String() // 邮件内容
 
 	//接收者邮箱列表

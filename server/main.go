@@ -48,7 +48,6 @@ func main() {
 	f, _ := os.Create("gin.log")
 	gin.DefaultWriter = io.MultiWriter(f)
 
-	// utils.SendEmailCode("2392503436@qq.com", "123456")
 	account := utils.GenerateAccount()
 	fmt.Printf("account: %v\n", account)
 

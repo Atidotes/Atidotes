@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 200 正常请求
 func Success(ctx *gin.Context, message string, result interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":      200,
@@ -17,6 +18,18 @@ func Success(ctx *gin.Context, message string, result interface{}) {
 	})
 }
 
+// 404 找不到资源
+func NoFound(ctx *gin.Context) {
+	ctx.JSON(http.StatusNotFound, gin.H{
+		"code":      404,
+		"message":   "No Found",
+		"result":    nil,
+		"success":   false,
+		"timeStamp": time.Now().Unix(),
+	})
+}
+
+// 500 服务器错误
 func Error(ctx *gin.Context, message string, result interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":      500,
