@@ -5,6 +5,8 @@ export interface ILoginForm {
   mailbox?: null | string; // 邮箱号
   account?: null | string; // 账号
   password?: null | string; // 密码
-  captcha?: null | string; // 手机验证码
+  captcha?: null | string; // 验证码
+  captchaID?: null | string; // 验证码ID
   chartCaptcha?: null | string; // 图形验证码
+  chartCaptchaID?:null | string; // 图形验证码ID
 }

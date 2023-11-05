@@ -31,6 +31,7 @@
           </el-col>
           <el-col :span="12">
             <el-button
+              :loading="loading"
               @click="handleCaptcha"
               :disabled="captchaFlag"
               type="primary"
@@ -51,7 +52,15 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12"></el-col>
+          <el-col :span="12">
+            <div
+              v-loading="chartLoading"
+              @click="getChartCaptchaData"
+              class="chartCaptcha"
+            >
+              <img :src="captcha" alt="图形验证码" />
+            </div>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
@@ -61,6 +70,7 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount, computed } from "vue";
 import { useCurrentInstance } from "@/hooks/system/useSystem";
+import { chartCaptchaApi } from "@/api/system/login/login";
 import type {
   FormInstance,
   FormRules,
@@ -73,11 +83,17 @@ const { proxy } = useCurrentInstance();
 const captchaFlag = ref(false); // 控制是否点击发送邮箱验证码
 const time = ref(60); // 时间
 const timer = ref(); // 定时器
+const captcha = ref(); // 验证码数据
+const chartLoading = ref(false); // 验证码加载loading
+const loading = ref(false); // 手机验证码loading
 const mobileRef = ref<FormInstance>();
+
+/** 表单数据 */
 const formState = ref<ILoginForm>({
   mobile: null,
   captcha: null,
   chartCaptcha: null,
+  chartCaptchaID: null,
 });
 
 /** 验证规则 */
@@ -89,11 +105,25 @@ const rules = ref<FormRules>({
   ],
 });
 
+/** 获取图形验证码 */
+const getChartCaptchaData = async () => {
+  chartLoading.value = true;
+  let res = await chartCaptchaApi();
+  if (res.code === 200 && res.success) {
+    captcha.value = res.result.captcha;
+    formState.value.chartCaptchaID = res.result.id;
+    chartLoading.value = false;
+  } else {
+    chartLoading.value = false;
+  }
+};
+
 /** 点击获取验证码 */
 const handleCaptcha = () => {
   if (!mobileRef.value) return;
   mobileRef.value.validateField("mobile", (valid) => {
     if (valid) {
+      loading.value = false;
       captchaFlag.value = true;
       proxy.$message.success("发送成功");
     } else {
@@ -144,8 +174,17 @@ onBeforeUnmount(() => {
 defineExpose({
   validateMobile,
   resetFieldsMobile,
+  getChartCaptchaData,
   formState,
 });
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.chartCaptcha {
+  width: 100px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 2px;
+  cursor: pointer;
+}
+</style>

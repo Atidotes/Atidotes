@@ -31,6 +31,7 @@
           </el-col>
           <el-col :span="12">
             <el-button
+              :loading="loading"
               @click="handleCaptcha"
               :disabled="captchaFlag"
               type="primary"
@@ -51,7 +52,15 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12"></el-col>
+          <el-col :span="12">
+            <div
+              v-loading="chartLoading"
+              @click="getChartCaptchaData"
+              class="chartCaptcha"
+            >
+              <img :src="captcha" alt="图形验证码" />
+            </div>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
@@ -62,6 +71,7 @@
 import { ref, computed, onBeforeUnmount } from "vue";
 import type { ILoginForm } from "../../type";
 import { useCurrentInstance } from "@/hooks/system/useSystem";
+import { chartCaptchaApi, emailCaptchaApi } from "@/api/system/login/login";
 import type {
   FormInstance,
   FormRules,
@@ -73,11 +83,16 @@ const { proxy } = useCurrentInstance();
 const captchaFlag = ref(false); // 控制是否点击发送邮箱验证码
 const time = ref(60); // 时间
 const timer = ref(); // 定时器
+const captcha = ref(); // 验证码数据
+const chartLoading = ref(false); // 验证码加载loading
+const loading = ref(false); // 邮箱验证码加载loading
 const mailboxRef = ref<FormInstance>();
 const formState = ref<ILoginForm>({
   mailbox: null,
   captcha: null,
+  captchaID: null,
   chartCaptcha: null,
+  chartCaptchaID: null,
 });
 
 /** 验证规则 */
@@ -89,13 +104,35 @@ const rules = ref<FormRules>({
   ],
 });
 
+/** 获取图形验证码 */
+const getChartCaptchaData = async () => {
+  chartLoading.value = true;
+  let res = await chartCaptchaApi();
+  if (res.code === 200 && res.success) {
+    captcha.value = res.result.captcha;
+    formState.value.chartCaptchaID = res.result.id;
+    chartLoading.value = false;
+  } else {
+    chartLoading.value = false;
+  }
+};
+
 /** 点击获取验证码 */
 const handleCaptcha = () => {
   if (!mailboxRef.value) return;
-  mailboxRef.value.validateField("mailbox", (valid) => {
+  mailboxRef.value.validateField("mailbox", async (valid) => {
     if (valid) {
-      captchaFlag.value = true;
-      proxy.$message.success("发送成功");
+      loading.value = true;
+      let res = await emailCaptchaApi({ mailbox: formState.value.mailbox });
+      if (res.code === 200 && res.success) {
+        loading.value = false;
+        captchaFlag.value = true;
+        formState.value.captchaID = res.result.id
+        proxy.$message.success("发送成功");
+      } else {
+        loading.value = false;
+        proxy.$message.success("发送失败");
+      }
     } else {
       proxy.$message.error("请填写邮箱号");
     }
@@ -144,8 +181,17 @@ onBeforeUnmount(() => {
 defineExpose({
   validateMailbox,
   resetFieldsMailbox,
+  getChartCaptchaData,
   formState,
 });
 </script>
 
-<style scoped lang="ts"></style>
+<style scoped lang="less">
+.chartCaptcha {
+  width: 100px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 2px;
+  cursor: pointer;
+}
+</style>

@@ -34,7 +34,15 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12"></el-col>
+          <el-col :span="12">
+            <div
+              v-loading="chartLoading"
+              @click="getChartCaptchaData"
+              class="chartCaptcha"
+            >
+              <img :src="captcha" alt="图形验证码" />
+            </div>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
@@ -44,18 +52,35 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from "vue";
 import type { ILoginForm } from "../../type";
+import { chartCaptchaApi } from "@/api/system/login/login";
 import type {
   FormInstance,
   FormRules,
   FormValidateCallback,
 } from "element-plus";
 
+const captcha = ref(); // 验证码数据
+const chartLoading = ref(false); // 验证码加载loading
 const accountRef = ref<FormInstance>();
 const formState = ref<ILoginForm>({
   account: null,
   password: null,
   chartCaptcha: null,
+  chartCaptchaID: null,
 });
+
+/** 获取图形验证码 */
+const getChartCaptchaData = async () => {
+  chartLoading.value = true;
+  let res = await chartCaptchaApi();
+  if (res.code === 200 && res.success) {
+    captcha.value = res.result.captcha;
+    formState.value.chartCaptchaID = res.result.id;
+    chartLoading.value = false;
+  } else {
+    chartLoading.value = false;
+  }
+};
 
 /** 验证规则 */
 const rules = ref<FormRules>({
@@ -86,8 +111,17 @@ onBeforeUnmount(() => {
 defineExpose({
   validateAccount,
   resetFieldsAccount,
+  getChartCaptchaData,
   formState,
 });
 </script>
 
-<style scoped lang="ts"></style>
+<style scoped lang="less">
+.chartCaptcha {
+  width: 100px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 2px;
+  cursor: pointer;
+}
+</style>

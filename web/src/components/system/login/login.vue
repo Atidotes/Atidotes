@@ -1,5 +1,11 @@
 <template>
-  <el-dialog title="登录" v-model="isDialog" width="50vw">
+  <el-dialog
+    destroy-on-close
+    @open="handleOpen"
+    title="登录"
+    v-model="isDialog"
+    width="50vw"
+  >
     <div class="login">
       <!-- 关注公众号 -->
       <div class="follow_official_account">
@@ -14,10 +20,10 @@
         <!-- 选项卡 -->
         <el-row class="login_tab">
           <el-col :span="24">
-            <el-radio-group v-model="params.loginType">
-              <el-radio-button :label="0">手机验证码登录</el-radio-button>
-              <el-radio-button :label="1">邮箱验证码登录</el-radio-button>
-              <el-radio-button :label="2">账号密码登录</el-radio-button>
+            <el-radio-group @change="handleChange" v-model="params.loginType">
+              <el-radio-button :label="0">手机登录</el-radio-button>
+              <el-radio-button :label="1">邮箱登录</el-radio-button>
+              <el-radio-button :label="2">账号登录</el-radio-button>
             </el-radio-group>
           </el-col>
         </el-row>
@@ -72,6 +78,28 @@ const params = ref({
   captcha: null, // 手机验证码
   chartCaptcha: null, // 图形验证码
 });
+
+/** 弹窗打开时回调 */
+const handleOpen = () => {
+  handleChange(params.value.loginType);
+};
+
+/** 点击切换tab */
+const handleChange = (index: number) => {
+  if (index === 0) {
+    mobileLoginRef.value?.getChartCaptchaData();
+    emailLoginRef.value?.resetFieldsMailbox();
+    accountLoginRef.value?.resetFieldsAccount();
+  } else if (index === 1) {
+    emailLoginRef.value?.getChartCaptchaData();
+    mobileLoginRef.value?.resetFieldsMobile();
+    accountLoginRef.value?.resetFieldsAccount();
+  } else if (index === 2) {
+    accountLoginRef.value?.getChartCaptchaData();
+    mobileLoginRef.value?.resetFieldsMobile();
+    emailLoginRef.value?.resetFieldsMailbox();
+  }
+};
 
 /** 点击提交表单并登录 */
 const handleLogin = () => {
