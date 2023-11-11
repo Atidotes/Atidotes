@@ -9,7 +9,6 @@ import (
 	Models "server/models"
 	routers "server/routes"
 	"server/setting"
-	"server/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,9 +46,6 @@ func main() {
 	// 记录到文件
 	f, _ := os.Create("gin.log")
 	gin.DefaultWriter = io.MultiWriter(f)
-
-	account := utils.GenerateAccount()
-	fmt.Printf("account: %v\n", account)
 
 	// 路由
 	r := routers.SetupRouter()

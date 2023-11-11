@@ -9,6 +9,11 @@ type MySQLConfig struct {
 	DB       string `yaml:"db"`
 }
 
+// 获取token密钥
+type TokenSecretKey struct {
+	SecretKey string `yaml:"secretKey"`
+}
+
 // 邮箱配置
 type Mailbox struct {
 	Sender   string `yaml:"sender"`

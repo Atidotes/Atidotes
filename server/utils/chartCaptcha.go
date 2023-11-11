@@ -6,7 +6,7 @@ import (
 	"github.com/mojocn/base64Captcha"
 )
 
-// 验证码存储位置
+// 验证码存储位置 默认10240 个 过期时间10分钟
 var store = base64Captcha.DefaultMemStore
 
 // 生成验证码
@@ -36,15 +36,14 @@ func MakeCaptcha() (id, base64 string, code string, err error) {
 	// 生成验证码
 	captcha := base64Captcha.NewCaptcha(driver, store)
 	id, base64, err = captcha.Generate()
-	code = store.Get(id, true)
+	code = store.Get(id, false)
 	return id, base64, code, err
 }
 
 // 验证captcha是否正确
-func VerifyCaptcha(id string, VerifyValue string) bool {
-	if store.Verify(id, VerifyValue, true) {
-		return true
-	} else {
+func VerifyCaptcha(id string, verifyValue string) bool {
+	if id == "" || verifyValue == "" {
 		return false
 	}
+	return store.Verify(id, verifyValue, true)
 }

@@ -1,20 +1,23 @@
 # 开发环境
-mode:     dev     # 环境
-KIND:     Server  # 名字
-VERSION:  v1      # 版本
+mode: dev # 环境
+KIND: Server # 名字
+VERSION: v1 # 版本
 
 server:
-  host:     localhost
-  port:     8080
-  address:  localhost:8080
+  host: localhost
+  port: 8080
+  address: localhost:8080
 
 mysql:
-  root:     root
+  root: root
   password: "@0304lgt."
-  host:     localhost
-  port:     3306
-  db:      "Atidotes"
+  host: localhost
+  port: 3306
+  db: "Atidotes"
+
+tokenSecretKey:
+  secretKey: "Atidotes_2392503436"
 
 mailbox:
-  sender:   "2392503436@qq.com"  # 发送者qq邮箱
+  sender: "2392503436@qq.com" # 发送者qq邮箱
   authCode: "ducisqdsdgbmebje" # 邮箱授权码

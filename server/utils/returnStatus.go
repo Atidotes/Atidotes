@@ -31,7 +31,7 @@ func NoFound(ctx *gin.Context) {
 
 // 500 服务器错误
 func Error(ctx *gin.Context, message string, result interface{}) {
-	ctx.JSON(http.StatusOK, gin.H{
+	ctx.JSON(http.StatusInternalServerError, gin.H{
 		"code":      500,
 		"message":   message,
 		"result":    result,
