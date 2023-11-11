@@ -13,7 +13,7 @@
         <el-form-item label="邮箱号" prop="mailbox">
           <el-input
             v-model.trim="formState.mailbox"
-            placeholder="请填写邮箱号"
+            placeholder="请填写QQ邮箱号"
           ></el-input>
         </el-form-item>
       </el-col>
@@ -70,6 +70,10 @@
 <script setup lang="ts">
 import { ref, computed, onBeforeUnmount } from "vue";
 import type { ILoginForm } from "../../type";
+import {
+  mailboxRules,
+  captchaRules,
+} from "@/utils/system/validationRules/validationRules";
 import { useCurrentInstance } from "@/hooks/system/useSystem";
 import { chartCaptchaApi, emailCaptchaApi } from "@/api/system/login/login";
 import type {
@@ -95,12 +99,38 @@ const formState = ref<ILoginForm>({
   chartCaptchaID: null,
 });
 
+/** 验证QQ邮箱号 */
+const validateMail = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    callback(new Error("请输入邮箱号"));
+  } else {
+    if (!mailboxRules.test(value)) {
+      callback(new Error("请输入正确的QQ邮箱号"));
+    } else {
+      callback();
+    }
+  }
+};
+
+/** 验证码验证规则 */
+const validateCaptcha = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback(new Error("请输入验证码"));
+  } else {
+    if (!captchaRules.test(value)) {
+      return callback(new Error("请输入正确的验证码"));
+    } else {
+      return callback();
+    }
+  }
+};
+
 /** 验证规则 */
 const rules = ref<FormRules>({
-  mailbox: [{ required: true, message: "请输入邮箱号", trigger: "blur" }],
-  captcha: [{ required: true, message: "请输入邮箱验证码", trigger: "blur" }],
+  mailbox: [{ required: true, validator: validateMail, trigger: "change" }],
+  captcha: [{ required: true, validator: validateCaptcha, trigger: "change" }],
   chartCaptcha: [
-    { required: true, message: "请输入图形验证码", trigger: "blur" },
+    { required: true, validator: validateCaptcha, trigger: "change" },
   ],
 });
 
@@ -127,7 +157,7 @@ const handleCaptcha = () => {
       if (res.code === 200 && res.success) {
         loading.value = false;
         captchaFlag.value = true;
-        formState.value.captchaID = res.result.id
+        formState.value.captchaID = res.result.id;
         proxy.$message.success("发送成功");
       } else {
         loading.value = false;
@@ -168,7 +198,8 @@ const validateMailbox = (callback: FormValidateCallback | undefined) => {
 const resetFieldsMailbox = () => {
   if (!mailboxRef.value) return;
   mailboxRef.value.resetFields();
-  captchaFlag.value = false;
+  formState.value.captchaID = null;
+  (formState.value.chartCaptchaID = null), (captchaFlag.value = false);
   clearTimeout(timer.value);
   time.value = 60;
 };

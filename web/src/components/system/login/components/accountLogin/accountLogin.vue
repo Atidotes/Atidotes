@@ -84,10 +84,10 @@ const getChartCaptchaData = async () => {
 
 /** 验证规则 */
 const rules = ref<FormRules>({
-  account: [{ required: true, message: "请输入账号", trigger: "blur" }],
-  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+  account: [{ required: true, message: "请输入账号", trigger: "change" }],
+  password: [{ required: true, message: "请输入密码", trigger: "change" }],
   chartCaptcha: [
-    { required: true, message: "请输入图形验证码", trigger: "blur" },
+    { required: true, message: "请输入图形验证码", trigger: "change" },
   ],
 });
 

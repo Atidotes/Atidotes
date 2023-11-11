@@ -17,7 +17,7 @@ export interface IParams<T> {
 /** Http请求 */
 export interface IHttp {
   Get: <T, D>(params: IParams<D>) => Promise<IResult<T>>;
-  Post: <T, D>(params: IParams<D>) => Promise<AxiosResponse<IResult<T>>>;
-  Delete: <T, D>(params: IParams<D>) => Promise<AxiosResponse<IResult<T>>>;
-  Put: <T, D>(params: IParams<D>) => Promise<AxiosResponse<IResult<T>>>;
+  Post: <T, D>(params: IParams<D>) => Promise<IResult<T>>;
+  Delete: <T, D>(params: IParams<D>) => Promise<IResult<T>>;
+  Put: <T, D>(params: IParams<D>) => Promise<IResult<T>>;
 }

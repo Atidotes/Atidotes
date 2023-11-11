@@ -9,7 +9,11 @@ const request = axios.create({
 // 添加请求拦截器
 request.interceptors.request.use(
   (config) => {
-    // 在发送请求之前做些什么
+    // 携带token信息
+    const token = localStorage.getItem('token')
+    if(token){
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config;
   },
   (error) => {
@@ -21,7 +25,9 @@ request.interceptors.request.use(
 // 添加响应拦截器
 request.interceptors.response.use(
   (response) => {
-    // 对响应数据做点什么
+    // 获取token信息，存储本地
+    const { authorization } = response.headers;
+    authorization && localStorage.setItem("token", authorization);
     return response.data;
   },
   (error) => {

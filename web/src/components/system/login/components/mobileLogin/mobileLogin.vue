@@ -98,10 +98,10 @@ const formState = ref<ILoginForm>({
 
 /** 验证规则 */
 const rules = ref<FormRules>({
-  mobile: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-  captcha: [{ required: true, message: "请输入手机验证码", trigger: "blur" }],
+  mobile: [{ required: true, message: "请输入手机号", trigger: "change" }],
+  captcha: [{ required: true, message: "请输入手机验证码", trigger: "change" }],
   chartCaptcha: [
-    { required: true, message: "请输入图形验证码", trigger: "blur" },
+    { required: true, message: "请输入图形验证码", trigger: "change" },
   ],
 });
 

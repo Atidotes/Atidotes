@@ -61,6 +61,7 @@ import mobileLogin from "./components/mobileLogin/mobileLogin.vue";
 import emailLogin from "./components/emailLogin/emailLogin.vue";
 import accountLogin from "./components/accountLogin/accountLogin.vue";
 import { useCurrentInstance } from "@/hooks/system/useSystem";
+import { loginApi } from "@/api/system/login/login";
 
 /** 获取组件实例 */
 const { proxy } = useCurrentInstance();
@@ -75,8 +76,10 @@ const params = ref({
   mailbox: null, // 邮箱号
   account: null, // 账号
   password: null, // 密码
-  captcha: null, // 手机验证码
+  captcha: null, // 验证码
+  captchaID: null, // 验证码ID
   chartCaptcha: null, // 图形验证码
+  chartCaptchaID: null, // 图形验证码ID
 });
 
 /** 弹窗打开时回调 */
@@ -119,9 +122,7 @@ const mobileSubmit = () => {
     if (valid) {
       Object.assign(params.value, mobileLoginRef.value?.formState);
       console.log("手机表单获取参数", params.value);
-
       proxy.$message.success("登录成功");
-
       mobileLoginRef.value?.resetFieldsMobile();
       Object.assign(params.value, mobileLoginRef.value?.formState);
     } else {
@@ -133,15 +134,18 @@ const mobileSubmit = () => {
 /** 提交邮箱表单 */
 const emailSubmit = () => {
   if (!emailLoginRef.value) return;
-  emailLoginRef.value.validateMailbox((valid) => {
+  emailLoginRef.value.validateMailbox(async (valid) => {
     if (valid) {
       Object.assign(params.value, emailLoginRef.value?.formState);
-      console.log("邮箱获取参数", params.value);
-
-      proxy.$message.success("登录成功");
-
-      emailLoginRef.value?.resetFieldsMailbox();
-      Object.assign(params.value, emailLoginRef.value?.formState);
+      let res = await loginApi(params.value);
+      if (res.code == 200 && res.success) {
+        proxy.$message.success("登录成功");
+        emailLoginRef.value?.resetFieldsMailbox();
+        Object.assign(params.value, emailLoginRef.value?.formState);
+        isDialog.value = false
+      } else {
+        proxy.$message.error("登录失败");
+      }
     } else {
       proxy.$message.error("表单验证失败");
     }

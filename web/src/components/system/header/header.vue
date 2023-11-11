@@ -9,7 +9,7 @@
 
       <!-- nav -->
       <ul class="content">
-        <li class="center item">首页</li>
+        <li @click="handleClick" class="center item">首页</li>
         <li class="center item">我的</li>
       </ul>
 
@@ -24,7 +24,7 @@
           :active-action-icon="Moon"
           :inactive-action-icon="Sunny"
         />
-        <a href="https://github.com/Atidotes/chat" class="gitHub">
+        <a href="https://github.com/Atidotes/Atidotes" class="gitHub">
           <span class="iconfont lee_github lee_icon"></span>
         </a>
       </div>
@@ -32,7 +32,7 @@
   </el-header>
 
   <!-- 登录 -->
-  <login ref="loginRef"></login>
+  <login ref="loginRef" />
 </template>
 
 <script setup lang="ts">
@@ -40,6 +40,7 @@ import { onMounted, ref } from "vue";
 import { login } from "@/components/system";
 import { Moon, Sunny } from "@element-plus/icons-vue";
 import { setTheme } from "@/style/index";
+import { userInfoApi } from "@/api/system/login/login";
 
 /** 定义登录 */
 let theme = localStorage.getItem("theme");
@@ -60,6 +61,17 @@ const handleDialog = () => {
 /** 改变switch */
 const handleChangeSwitch = (isDark: boolean) => {
   isDark ? setTheme(false, "dark") : setTheme(false, "default");
+};
+
+// TODO 测试
+const handleClick = async () => {
+  let res = await userInfoApi().catch(() => {
+    console.log("请求错误");
+  });
+
+  if (res && res.code === 200 && res.success) {
+    console.log(res);
+  }
 };
 </script>
 
