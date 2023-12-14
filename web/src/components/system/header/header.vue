@@ -15,7 +15,7 @@
 
       <!-- 功能 -->
       <div class="right">
-        <span class="login" @click="handleDialog">登录</span>
+        <!-- 主题切换 -->
         <el-switch
           @change="handleChangeSwitch"
           active-color="#4F4F4F"
@@ -24,6 +24,16 @@
           :active-action-icon="Moon"
           :inactive-action-icon="Sunny"
         />
+
+        <!-- 头像 -->
+        <span class="login" @click="handleDialog">
+          <el-avatar
+            :size="22"
+            src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+          />
+        </span>
+
+        <!-- gitHub -->
         <a href="https://github.com/Atidotes/Atidotes" class="gitHub">
           <span class="iconfont lee_github lee_icon"></span>
         </a>
